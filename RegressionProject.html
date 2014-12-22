@@ -60,7 +60,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="executive-summary" class="section level2">
 <h2>Executive Summary</h2>
-<p>The mtcars dataset was loaded into R to study the relationship between fuel economy (mpg) and transmission type (automatic or manual, defined by the am column). Using multivariate regression, confounders such as weight (wt), acceleration (parametrized as the time to run a quarter mile, column name qsec), and horsepower (hp) were selected to allow for the best prediction of the effect of transmission type on fuel economy. The adjusted R squared value and residual standard error were studied to quantifiably confirm the best choice of parameters.</p>
+<p>The mtcars dataset was loaded into R to study the relationship between fuel economy (mpg) and transmission type (automatic or manual, defined by the am column). Using multivariate regression, confounders such as weight (wt), acceleration (parametrized as the time to run a quarter mile, column name qsec), and horsepower (hp) were selected to allow for the best prediction of the effect of transmission type on fuel economy. The adjusted R squared value and residual standard error were studied to quantifiably confirm the best choice of parameters. From studying the model’s coefficients, it is clear that manual transmissions are better for fuel economy, as proven by the positive coefficient for the am parameter (which lists manual as 1 and automatic as 0)</p>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
@@ -100,6 +100,7 @@ print(c)</code></pre>
 ## hp            0.8367919                2.434828
 ## carb          0.8355852                2.443813</code></pre>
 <p>As visible in the table above, the hp model has a higher R squared value and lower residual standard error, making it the preferred choice. Furthermore, for the hp model, the standard error in the estimate of the am parameter is lower, allowing for a more accurate prediction. The selection of the hp model also complements the “common sense” approach, as horsepower can act as a confounder to mpg, hence would predict the am parameter better when held constant.</p>
+<p>From studying the coefficients above, it is clear that manual transmissions are better for fuel economy, as proven by the positive coefficient for the am parameter (which lists manual as 1 and automatic as 0)</p>
 </div>
 
 
