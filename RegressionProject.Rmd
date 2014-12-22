@@ -1,0 +1,45 @@
+---
+title: "Regression Project: Fuel Economy by Transmission Type"
+author: "Zain Tejani"
+date: "Sunday, December 21, 2014"
+output: html_document
+---
+##Executive Summary
+  
+  The mtcars dataset was loaded into R to study the relationship between fuel economy (mpg) and transmission type (automatic or manual, defined by the am column). Using multivariate regression, confounders such as weight (wt), acceleration (parametrized as the time to run a quarter mile, column name qsec), and horsepower (hp) were selected to allow for the best prediction of the effect of transmission type on fuel economy. The adjusted R squared value and residual standard error were studied to quantifiably confirm the best choice of parameters.
+  
+##Analysis
+  Using the following code, the mtcars data was loaded.
+```{r}
+library(datasets)
+data(mtcars)
+```
+
+  Using the ?mtcars command in R, one can see that the transmission classification is binary in the "am" column, with a value of 0 representing an automatic gearbox, and 1 representing a manual gearbox.
+  
+  The column names were explored, to determine which variables could act as confounders to mpg.
+```{r}
+colnames(mtcars)
+```
+
+  The development of the regression model was initially based on knowledge of cars and their workings. It stands to reason that heavier cars consume more fuel, so weight was selected as a confounder. Furthermore, cars that accelerate faster tend to burn fuel quicker. Hence, the qsec variable (a drag racing measurement) was selected as aonther confounder.
+  
+  Beyond this point, confounders were selected based on trial and error, comparing the R-squared values, residual standard error, and Pr(>|t|) values to select the best alternative for the model. After numerous trials, the hp and carb variables were the two best alternatives found.
+  
+  The coefficient tables for the models can be seen below:
+```{r}
+summary(lm(mpg~am+wt+qsec+hp, data=mtcars))$coef
+summary(lm(mpg~am+wt+qsec+carb, data=mtcars))$coef
+```
+
+  A comparison of the adjusted R squared values and residual errors can be seen below:
+```{r}
+a<-rbind(summary(lm(mpg~am+wt+qsec+hp, data=mtcars))[[9]],summary(lm(mpg~am+wt+qsec+carb, data=mtcars))[[9]])
+b<-rbind(summary(lm(mpg~am+wt+qsec+hp, data=mtcars))[[6]],summary(lm(mpg~am+wt+qsec+carb, data=mtcars))[[6]])
+c<-cbind(a,b)
+colnames(c)<-c("Adjusted R Squared","Residual Standard Error")
+rownames(c)<-c("hp","carb")
+print(c)
+```
+
+  As visible in the table above, the hp model has a higher R squared value and lower residual standard error, making it the preferred choice. Furthermore, for the hp model, the standard error in the estimate of the am parameter is lower, allowing for a more accurate prediction. The selection of the hp model also complements the "common sense" approach, as horsepower can act as a confounder to mpg, hence would predict the am parameter better when held constant.
